@@ -12,34 +12,41 @@
 <script>
 export default {
   props: {
+
     adClient: {
       type: String,
       required: true
     },
+
     adSlot: {
       type: String,
       required: true
     },
+
     adFormat: {
       type: String,
       required: false,
       default: 'auto'
     },
+
     adStyle: {
       type: String,
       required: false,
       default: 'display: block'
     },
+
     adFullwidth: {
       type: String,
       required: false,
       default: 'false'
     },
+
     adLayout: {
       type: String,
       required: false,
       default: ''
     }
+
   },
   mounted() {
     (window.adsbygoogle = window.adsbygoogle || []).push({})

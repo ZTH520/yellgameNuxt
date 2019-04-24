@@ -2,15 +2,20 @@
   <div class="app">
     <header class="header">
       <div class="top">
+
         <div class="icon" @click="goback">
           <Icon type="md-arrow-back" />
         </div>
+
         <span>{{activeCate}}</span>
+
         <div class="icon share-icon" :data-clipboard-text="address" @click="share">
           <Icon type="md-share" />
         </div>
+
       </div>
     </header>
+    <!-- google广告 -->
     <adsense
       ad-client="ca-pub-2363017877465244"
       ad-slot="7998248051"
@@ -18,23 +23,31 @@
       ad-format="auto"
       adFullwidth="true">
     </adsense>
+
     <div class="content">
       <div class="categorie">
+
         <div class="card-container">
           <div class="card" v-for="detail in gameList" :key="detail.id" @click="toDetial(detail.name)">
+
             <div style="overflow:hidden;">
               <img v-lazy="detail.teaserBig" alt="games">
             </div>
+
             <p :title="detail.name">{{detail.name}}</p>
+
             <div class="card-b">
               <div class="cate">{{activeCate}}</div>
               <div class="star">10.0<Icon type="md-star" class="stars" /></div>
             </div>
+
           </div>
         </div>
+
         <div class="clearfix"></div>
       </div>
     </div>
+
   </div>
 </template>
 <script>
@@ -45,46 +58,52 @@
   export default {
     data() {
       return {
-        address:"http://www.yellgame.com",
+        address: 'http://www.yellgame.com',
         isMenu: false,
         loading: false,
         isPrivacy: false,
-        gameList:[]
+        gameList: []
       };
     },
-    mounted() {
+
+    mounted () {
       new Clipboard('.share-icon');
-      // this.getList(this.$route.params.cate)
     },
+
     computed: {
       activeCate: function() {
         this.getList(this.$route.params.cate)
         return this.$route.params.cate
       }
     },
+
     methods: {
-      share(){
+      share () {
         this.$Message.success({
           content: 'Copied share link',
           duration: 3
         });
       },
-      goback(){
+
+      goback () {
         this.$router.go(-1);
       },
-      toList(cate){
+
+      toList (cate) {
         this.$router.push({
           name:"List",
           params: { cate }
         })
         this.isMenu = false
       },
-      toDetial(name){
+
+      toDetial (name) {
         this.$router.push({
           path:"/detail/" + name
         })
       },
-      getList(categories) {
+
+      getList (categories) {
         this.loading = true
         api.getList({categories: categories}).then(
           res => {
@@ -96,11 +115,13 @@
           }
         )
       },
-      showPrivacy(event){
+
+      showPrivacy (event) {
         event.preventDefault()
         this.isPrivacy=true
       }
     },
+
     directives: {
       focus: {
         inserted: function (el) {
@@ -108,6 +129,7 @@
         }
       }
     },
+
     components: {
       "adsense": VueAdsense,
       Icon

@@ -1,16 +1,22 @@
-<template slot="title">
+<template>
   <div class="app">
+
     <header class="header">
       <div class="top">
+
         <div class="icon" @click="goback">
           <Icon type="md-arrow-back" />
         </div>
+
         <span>{{activeName}}</span>
+
         <div class="icon share-icon" :data-clipboard-text="address" @click="share">
           <Icon type="md-share" />
         </div>
+
       </div>
     </header>
+
     <div id="iframe"></div>
   </div>
 </template>
@@ -23,7 +29,7 @@
   export default {
     data() {
       return {
-        address:"http://www.yellgame.com",
+        address:'http://www.yellgame.com',
         isMenu: false,
         loading: false,
         isPrivacy: false,
@@ -31,30 +37,36 @@
         gameRecommond: []
       }
     },
-    mounted(){
-      let clipboard = new Clipboard('.share-icon');
+    mounted () {
+      // 点击分享粘贴在剪切板上
+      new Clipboard('.share-icon');
     },
+
     methods: {
-      share(){
+      share () {
         this.$Message.success({
           content: 'Copied share link',
           duration: 3
         });
       },
-      goGame(name){
+
+      goGame (name) {
         this.$router.push({
           path:"/game/" + name
         })
       },
-      goback(){
+
+      goback () {
         this.$router.go(-1);
       },
-      toList(cate){
+
+      toList (cate) {
         this.$router.push({
           path:"list/"+cate
         })
       },
-      getData(name) {
+
+      getData (name) {
         this.loading = true
         let arr = [
           this.getDetail(name),
@@ -65,12 +77,13 @@
             this.loading = false
             this.gameDetail = JSON.parse(res[0])[0]
             this.gameRecommond = JSON.parse(res[1]).slice(1,5)
-            // console.log(this.gameDetail.link)
+
             this.getGame(document, this.gameDetail.title, 286222);
           }
         )
       },
-      getDetail(name) {
+
+      getDetail (name) {
         return new Promise((resolve,reject) => {
           api.getDetail({name: name}).then(
             res => {
@@ -83,7 +96,8 @@
           )
         })
       },
-      getRecommond(name) {
+
+      getRecommond (name) {
         return new Promise((resolve,reject) => {
           api.getRecommond({name: name}).then(
             res => {
@@ -96,7 +110,8 @@
           )
         })
       },
-      getGame(d, gn,scriptId){
+      // 第三方游戏代码(https://publishers.softgames.com/en/my-games)
+      getGame (d, gn,scriptId) {
         var iframe = document.getElementById('iframe')
         iframe.innerHTML=""
         var prop = {
@@ -123,11 +138,13 @@
           d.getElementsByTagName('head')[0].appendChild(s);
         }
       },
-      showPrivacy(event){
+
+      showPrivacy (event) {
         event.preventDefault()
         this.isPrivacy=true
       },
-      toDetial(name){
+
+      toDetial (name) {
         this.$router.push({
           path:"/detail/" + name
         })
@@ -140,6 +157,7 @@
         return this.$route.params.name
       }
     },
+
     directives: {
       focus: {
         inserted: function (el) {
@@ -147,6 +165,7 @@
         }
       }
     },
+
     components: {
       "adsense": VueAdsense,
       Icon

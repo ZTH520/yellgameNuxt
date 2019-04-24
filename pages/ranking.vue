@@ -1,13 +1,15 @@
 <template>
   <div class="app">
-      <div class="menu" v-if="isMenu" @click="showMenu">
-        <div class="nav">
+
+    <div class="menu" v-if="isMenu" @click="showMenu">
+      <div class="nav">
           <ul>
             <nuxt-link :to="{name:'index'}"><li>Recommendation</li></nuxt-link>
             <nuxt-link :to="{name:'ranking'}"><li>Ranking</li></nuxt-link>
           </ul>
-        </div>
       </div>
+    </div>
+
     <div class="cookie" v-if="isCookie">
       <div class="ask">
         The site users cookies to remember whether you agreed on this visit to see any cookies on any future visit. Eh？
@@ -16,8 +18,11 @@
         <div @click="changeCookie">NO</div>
         <div  @click="changeCookie" class="yes">YES</div>
       </div>
+
     </div>
+
     <header class="header">
+
       <div class="top">
         <div class="icon" @click="showMenu">
           <Icon type="md-menu"/>
@@ -27,53 +32,76 @@
           <Icon type="md-share" />
         </div>
       </div>
+
       <ul class="bottom">
         <nuxt-link :to="{name:'index'}"><li>Recommendation</li></nuxt-link>
         <nuxt-link :to="{name:'ranking'}"><li>Ranking</li></nuxt-link>
       </ul>
+
     </header>
+
     <div class="content">
       <ul>
         <li @click="changeActive(0)" :class={active:activeList[0]}>Best ranking</li>
         <li @click="changeActive(1)" :class={active:activeList[1]}>Latest ranking</li>
         <li @click="changeActive(2)" :class={active:activeList[2]}>Hottest ranking</li>
       </ul>
+
+      <adsense
+        ad-client="ca-pub-2363017877465244"
+        ad-slot="7998248051"
+        ad-style="display:block;text-align:center;"
+        ad-format="auto"
+        adFullwidth="true">
+      </adsense>
+
       <div class="game-con">
+
         <div class="best" v-if="activeList[0]">
-          <a  v-for="(game,index) in bestList" :href="game.link" :key="index"><div class="game">
-            <div><img :src="game.src" alt=""></div>
-            <div>
-              <p>{{game.name}}</p>
-              <p>10.0<Icon type="md-star" class="star icon" />&nbsp;&nbsp;&nbsp; {{game.num}}K+<Icon type="md-person" class="icon" /></p>
+          <a  v-for="(game,index) in bestList" :href="game.link" :key="index">
+            <div class="game">
+              <div><img :src="game.src" alt="h5 games,free game"></div>
+              <div>
+                <p>{{game.name}}</p>
+                <p>10.0<Icon type="md-star" class="star icon" />&nbsp;&nbsp;&nbsp; {{game.num}}K+<Icon type="md-person" class="icon" /></p>
+              </div>
+              <i :class="['tag',{'tag-red':index<=2}]"></i>
+              <span class="tag-con">{{index+1}}</span>
             </div>
-            <i :class="['tag',{'tag-red':index<=2}]"></i>
-            <span class="tag-con">{{index+1}}</span>
-          </div></a>
+          </a>
         </div>
+
         <div class="latest" v-if="activeList[1]">
-          <a  v-for="(game,index) in latestList" :href="game.link" :key="index"><div class="game">
-            <div><img :src="game.src" alt=""></div>
-            <div>
-              <p>{{game.name}}</p>
-              <p>10.0<Icon type="md-star" class="star icon" />&nbsp;&nbsp;&nbsp; {{game.num}}K+<Icon type="md-person" class="icon" /></p>
+          <a  v-for="(game,index) in latestList" :href="game.link" :key="index">
+            <div class="game">
+              <div><img :src="game.src" alt="h5 games,free game"></div>
+              <div>
+                <p>{{game.name}}</p>
+                <p>10.0<Icon type="md-star" class="star icon" />&nbsp;&nbsp;&nbsp; {{game.num}}K+<Icon type="md-person" class="icon" /></p>
+              </div>
+              <i :class="['tag',{'tag-red':index<=2}]"></i>
+              <span class="tag-con">{{index+1}}</span>
             </div>
-            <i :class="['tag',{'tag-red':index<=2}]"></i>
-            <span class="tag-con">{{index+1}}</span>
-          </div></a>
+          </a>
         </div>
+
         <div class="hottest" v-if="activeList[2]">
-          <a  v-for="(game,index) in hottestList" :href="game.link" :key="index"><div class="game">
-            <div><img :src="game.src" alt=""></div>
-            <div>
-              <p>{{game.name}}</p>
-              <p>10.0<Icon type="md-star" class="star icon" />&nbsp;&nbsp;&nbsp; {{game.num}}K+<Icon type="md-person" class="icon" /></p>
+          <a  v-for="(game,index) in hottestList" :href="game.link" :key="index">
+            <div class="game">
+              <div><img :src="game.src" alt="h5 games,free game"></div>
+              <div>
+                <p>{{game.name}}</p>
+                <p>10.0<Icon type="md-star" class="star icon" />&nbsp;&nbsp;&nbsp; {{game.num}}K+<Icon type="md-person" class="icon" /></p>
+              </div>
+              <i :class="['tag',{'tag-red':index<=2}]"></i>
+              <span class="tag-con">{{index+1}}</span>
             </div>
-            <i :class="['tag',{'tag-red':index<=2}]"></i>
-            <span class="tag-con">{{index+1}}</span>
-          </div></a>
+          </a>
         </div>
+
       </div>
     </div>
+
     <footer>
       <h3>About Us</h3>
       <p>Enjoy with your friends.</p>
@@ -81,7 +109,7 @@
       <ul>
         <a href="./useragreement.html"><li>Users Agreement</li></a>
         <div class="line"></div>
-        <a href="./privacy.html"><li>Privacy Policy</li></a>
+        <nuxt-link to="/privacy"><li>Privacy Policy</li></nuxt-link>
       </ul>
       <button @click="clearCookie">clear all cookie</button>
       <p class="small">
@@ -103,238 +131,234 @@
         address:"http://www.yellgame.com",
         isCookie: true,
         isMenu: false,
-        loading: false,
         isPrivacy: false,
-        carvalue: 0,
-        setting: {
-          autoplay: true,
-          autoplaySpeed: 3500,
-          dots: 'none',
-          radiusDot: false,
-          trigger: 'click',
-          arrow: 'never'
-        },
-        gameList:[],
-        activeList:[true,false,false],
-        bestList:[
+        gameList: [],
+        activeList: [true, false, false],
+        bestList: [
           {
-            link:"./detail/Jumpanda",
-            src:"http://www.yellgame.com/_nuxt/img/pander.jpg",
-            name:"Jumpanda",
-            num:"598"
+            link: './detail/Garden Tales',
+            src: 'http://www.yellgame.com/_nuxt/img/garden-tales.jpg',
+            name: 'Garden Tales',
+            num: '598'
           },
           {
-            link:"./detail/Bubble%20Shooter%20Candy",
-            src:"http://www.yellgame.com/_nuxt/img/bubble.jpg",
-            name:"Bubble Shooter Candy",
-            num:"572"
+            link: './detail/Cookie Crush 3',
+            src: 'http://www.yellgame.com/_nuxt/img/cookie-crush-3.jpg',
+            name: 'Cookie Crush 3',
+            num: '572'
           },
           {
-            link:"./detail/Crazy%20Birds",
-            src:"http://www.yellgame.com/_nuxt/img/bird.jpg",
-            name:"Crazy Birds",
-            num:"564"
+            link: './detail/Jewels Blitz 3',
+            src: 'http://www.yellgame.com/_nuxt/img/jewels-blitz-3.jpg',
+            name: 'Jewels Blitz 3',
+            num: '564'
           },
           {
-            link:"./detail/Alfy",
-            src:"http://www.yellgame.com/_nuxt/img/alfy.jpg",
-            name:"Alfy",
-            num:"508"
+            link: './detail/Bubble Shooter HD',
+            src: 'http://www.yellgame.com/_nuxt/img/bubble-shooter-hd.jpg',
+            name: 'Bubble Shooter HD',
+            num: '508'
           },
           {
-            link:"./detail/Bike%20Racing",
-            src:"http://www.yellgame.com/_nuxt/img/bike.jpg",
-            name:"Bike Racing",
-            num:"504"
+            link: './detail/Candy Rain 5',
+            src: 'http://www.yellgame.com/_nuxt/img/candy-rain-5.jpg',
+            name: 'Candy Rain 5',
+            num: '504'
           },
           {
-            link:"./detail/Stack%20Tower",
-            src:"http://www.yellgame.com/_nuxt/img/stack.jpg",
-            name:"Stack Tower",
-            num:"478"
+            link: './detail/Forest Match',
+            src: 'http://www.yellgame.com/_nuxt/img/forest-match.jpg',
+            name: 'Forest Match',
+            num: '478'
           },
           {
-            link:"./detail/Ninjakira",
-            src:"http://www.yellgame.com/_nuxt/img/ninj.jpg",
-            name:"Ninjakira",
-            num:"465"
+            link: './detail/Aqua Blitz 2',
+            src: 'http://www.yellgame.com/_nuxt/img/aqua-blitz-2.jpg',
+            name: 'Aqua Blitz 2',
+            num: '465'
           },
           {
-            link:"./detail/Monocycle",
-            src:"http://www.yellgame.com/_nuxt/img/monooycle.jpg",
-            name:"Monocycle",
-            num:"456"
+            link: './detail/Bubble Shooter Pro',
+            src: 'http://www.yellgame.com/_nuxt/img/bubble-shooter-pro.jpg',
+            name: 'Bubble Shooter Pro',
+            num: '456'
           },
           {
-            link:"./detail/Ship%20the%20Sheep",
-            src:"http://www.yellgame.com/_nuxt/img/ship.jpg",
-            name:"Ship the Sheep",
-            num:"421"
+            link: './detail/Butterfly Kyodai',
+            src: 'http://www.yellgame.com/_nuxt/img/butterfly-kyodai.jpg',
+            name: 'Butterfly Kyodai',
+            num: '421'
           },
           {
-            link:"./detail/Bombs%20and%20Zombies",
-            src:"http://www.yellgame.com/_nuxt/img/bombs.jpg",
-            name:"Bombs and Zombies",
-            num:"420"
+            link: './detail/2020',
+            src: 'http://www.yellgame.com/_nuxt/img/2020.jpg',
+            name: '2020',
+            num: '420'
           }
         ],
-        latestList:[
+        latestList: [
           {
-            link:"./detail/Bubble%20Shooter%20Candy",
-            src:"http://www.yellgame.com/_nuxt/img/bubble.jpg",
-            name:"Bubble Shooter Candy",
-            num:"572"
+            link: './detail/Street Race',
+            src: 'http://www.yellgame.com/_nuxt/img/street-race.jpg',
+            name: 'Street Race',
+            num: '572'
           },
           {
-            link:"./detail/Jumpanda",
-            src:"http://www.yellgame.com/_nuxt/img/pander.jpg",
-            name:"Jumpanda",
-            num:"598"
+            link: './detail/Bubble Shooter Pro',
+            src: 'http://www.yellgame.com/_nuxt/img/bubble-shooter-pro.jpg',
+            name: 'Bubble Shooter Pro',
+            num: '598'
           },
           {
-            link:"./detail/Crazy%20Birds",
-            src:"http://www.yellgame.com/_nuxt/img/bird.jpg",
-            name:"Crazy Birds",
-            num:"564"
+            link: './detail/360 Connect',
+            src: 'http://www.yellgame.com/_nuxt/img/360-connect.jpg',
+            name: '360 Connect',
+            num: '564'
           },
           {
-            link:".detail/Lost",
-            src:"http://www.yellgame.com/_nuxt/img/lost.jpg",
-            name:"Lost",
-            num:"525"
+            link: '.detail/Daily Jigsaw',
+            src: 'http://www.yellgame.com/_nuxt/img/daily-jigsaw.jpg',
+            name: 'Daily Jigsaw',
+            num: '525'
           },
           {
-            link:"./detail/Bike%20Racing",
-            src:"http://www.yellgame.com/_nuxt/img/bike.jpg",
-            name:"Bike Racing",
-            num:"504"
+            link: './detail/Garden Tales',
+            src: 'http://www.yellgame.com/_nuxt/img/garden-tales.jpg',
+            name: 'Garden Tales',
+            num: '504'
           },
           {
-            link:"./detail/Parking%20Training",
-            src:"http://www.yellgame.com/_nuxt/img/parking.jpg",
-            name:"Parking Training",
-            num:"490"
+            link: './detail/Solitaire Daily Challenge',
+            src: 'http://www.yellgame.com/_nuxt/img/solitaire-daily-challenge.jpg',
+            name: 'Solitaire Daily Challenge',
+            num: '490'
           },
           {
-            link:"./detail/Ninjakira",
-            src:"http://www.yellgame.com/_nuxt/img/ninj.jpg",
-            name:"Ninjakira",
-            num:"465"
+            link: './detail/Aqua Blitz 2',
+            src: 'http://www.yellgame.com/_nuxt/img/aqua-blitz-2.jpg',
+            name: 'Aqua Blitz 2',
+            num: '456'
           },
           {
-            link:"./detail/Crazy%20Birds%202",
-            src:"http://www.yellgame.com/_nuxt/img/crazy.jpg",
-            name:"Crazy Birds 2",
-            num:"456"
+            link: './detail/Daily Sudoku',
+            src: 'http://www.yellgame.com/_nuxt/img/daily-sudoku.jpg',
+            name: 'Daily Sudoku',
+            num: '421'
           },
           {
-            link:"./detail/Ship%20the%20Sheep",
-            src:"http://www.yellgame.com/_nuxt/img/ship.jpg",
-            name:"Ship the Sheep",
-            num:"421"
+            link: './detail/Bubble Shooter Candy',
+            src: 'http://www.yellgame.com/_nuxt/img/bubble-shooter-candy.jpg',
+            name: 'Bubble Shooter Candy',
+            num: '465'
           },
           {
-            link:"./detail/Hyper%20Gunner",
-            src:"http://www.yellgame.com/_nuxt/img/huper.jpg",
-            name:"Hyper Gunner",
-            num:"423"
+            link: './detail/Candy Mahjong',
+            src: 'http://www.yellgame.com/_nuxt/img/candy-mahjong.jpg',
+            name: 'Candy Mahjong',
+            num: '423'
           }
         ],
-        hottestList:[
+        hottestList: [
           {
-            link:"./detail/Crazy%20Birds",
-            src:"http://www.yellgame.com/_nuxt/img/bird.jpg",
-            name:"Crazy Birds",
-            num:"564"
+            link: './detail/Crazy%20Birds',
+            src: 'http://www.yellgame.com/_nuxt/img/bird.jpg',
+            name: 'Crazy Birds',
+            num: '564'
           },
           {
-            link:"./detail/Jumpanda",
-            src:"http://www.yellgame.com/_nuxt/img/pander.jpg",
-            name:"Jumpanda",
-            num:"598"
+            link: './detail/Jumpanda',
+            src: 'http://www.yellgame.com/_nuxt/img/pander.jpg',
+            name: 'Jumpanda',
+            num: '598'
           },
           {
-            link:"./detail/Vanilla%20Pinball",
-            src:"http://www.yellgame.com/_nuxt/img/vanilla.jpg",
-            name:"Vanilla Pinball",
-            num:"573"
+            link: './detail/Vanilla%20Pinball',
+            src: 'http://www.yellgame.com/_nuxt/img/vanilla.jpg',
+            name: 'Vanilla Pinball',
+            num: '573'
           },
           {
-            link:"./detail/Alfy",
-            src:"http://www.yellgame.com/_nuxt/img/alfy.jpg",
-            name:"Alfy",
-            num:"508"
+            link: './detail/Alfy',
+            src: 'http://www.yellgame.com/_nuxt/img/alfy.jpg',
+            name: 'Alfy',
+            num: '508'
           },
           {
-            link:"./detail/Down%20The%20Hill",
-            src:"http://www.yellgame.com/_nuxt/img/down.jpg",
-            name:"Down The Hill",
-            num:"501"
+            link: './detail/Down%20The%20Hill',
+            src: 'http://www.yellgame.com/_nuxt/img/down.jpg',
+            name: 'Down The Hill',
+            num: '501'
           },
           {
-            link:"./detail/Stack%20Tower",
-            src:"http://www.yellgame.com/_nuxt/img/stack.jpg",
-            name:"Stack Tower",
-            num:"478"
+            link: './detail/Stack%20Tower',
+            src: 'http://www.yellgame.com/_nuxt/img/stack.jpg',
+            name: 'Stack Tower',
+            num: '478'
           },
           {
-            link:"./detail/Hover%20Jump",
-            src:"http://www.yellgame.com/_nuxt/img/hover.jpg",
-            name:"Hover Jump",
-            num:"485"
+            link: './detail/Hover%20Jump',
+            src: 'http://www.yellgame.com/_nuxt/img/hover.jpg',
+            name: 'Hover Jump',
+            num: '485'
           },
           {
-            link:"./detail/Monocycle",
-            src:"http://www.yellgame.com/_nuxt/img/monooycle.jpg",
-            name:"Monocycle",
-            num:"456"
+            link: './detail/Monocycle',
+            src: 'http://www.yellgame.com/_nuxt/img/monooycle.jpg',
+            name: 'Monocycle',
+            num: '456'
           },
           {
-            link:"./detail/Broadside",
-            src:"http://www.yellgame.com/_nuxt/img/broad.jpg",
-            name:"Broadside",
-            num:"428"
+            link: './detail/Broadside',
+            src: 'http://www.yellgame.com/_nuxt/img/broad.jpg',
+            name: 'Broadside',
+            num: '428'
           },
           {
-            link:"./detail/Bombs%20and%20Zombies",
-            src:"http://www.yellgame.com/_nuxt/img/bombs.jpg",
-            name:"Bombs and Zombies",
-            num:"420"
+            link: './detail/Bombs%20and%20Zombies',
+            src: 'http://www.yellgame.com/_nuxt/img/bombs.jpg',
+            name: 'Bombs and Zombies',
+            num: '420'
           }
         ]
       };
     },
-    mounted() {
-      let clipboard = new Clipboard('.share-icon');
+
+    mounted () {
+      new Clipboard('.share-icon');
       this.getIndexList()
       if(this.getCookie("isCookie")){
         this.isCookie = !this.getCookie("isCookie")
       }
     },
+
     methods: {
-      share(){
+      share () {
         this.$Message.success({
           content: 'Copied share link',
           duration: 3
         });
       },
-      changeActive(num){
+      // 改变激活状态
+      changeActive (num) {
         this.$set(this.activeList, 0, false)
         this.$set(this.activeList, 1, false)
         this.$set(this.activeList, 2, false)
         this.activeList[num] = true;
       },
-      clearCookie(){
+
+      clearCookie () {
         this.delCookie("isCookie");
         this.$router.go(0);
       },
-      delCookie(key) {
+
+      delCookie (key) {
         let data = this.getCookie(key)
         if(data !== false){
           this.setCookie(key,data,-1);
         }
       },
-      getCookie(key) {
+
+      getCookie (key) {
         let data = document.cookie
         let startIndex = data.indexOf(key + '=')
         if(startIndex > -1) {
@@ -346,35 +370,40 @@
           return ''
         }
       },
-      setCookie(key,value,time) {
+
+      setCookie (key,value,time) {
         let expire = time
-        if(time == undefined) {
+        if(time === undefined) {
           expire = 2
         }
         let cur = new Date()
         cur.setTime(cur.getTime() + expire*3600*1000)
         document.cookie = key + '=' + encodeURIComponent(value) + ';expires=' + cur.toGMTString() + ";path=/;"
       },
-      changeCookie(){
+
+      changeCookie () {
         this.isCookie = !this.isCookie;
         this.setCookie("isCookie",true,720);
       },
-      showMenu(){
+
+      showMenu () {
         this.isMenu = !this.isMenu
-        this.isSearch = false
       },
-      toList(cate){
+
+      toList (cate) {
         this.$router.push({
           name:"List",
           params: { cate }
         })
       },
-      toDetial(name){
+
+      toDetial (name) {
         this.$router.push({
           path:"/detail/" + name
         })
       },
-      getIndexList() {
+
+      getIndexList () {
         this.loading = true
         api.getIndexList().then(
           res => {
@@ -386,7 +415,8 @@
           }
         )
       },
-      compare(prop) {
+
+      compare (prop) {
         return function (obj1, obj2) {
           let val1 = obj1[prop];
           let val2 = obj2[prop];
@@ -399,11 +429,13 @@
           }
         }
       },
-      showPrivacy(event){
+
+      showPrivacy (event) {
         event.preventDefault()
         this.isPrivacy=true
       }
     },
+
     directives: {
       focus: {
         inserted: function (el) {
@@ -411,6 +443,7 @@
         }
       }
     },
+
     components: {
       "adsense": VueAdsense,
       Icon

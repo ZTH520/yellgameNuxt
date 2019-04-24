@@ -1,8 +1,6 @@
 <template>
   <div class="app">
-    <div class="loading">
-      <Spin fix v-if="loading">加载中...</Spin>
-    </div>
+    <!-- 左侧菜单 -->
     <div class="menu" v-if="isMenu" @click="showMenu">
       <div class="nav">
         <ul>
@@ -11,33 +9,43 @@
         </ul>
       </div>
     </div>
-
+    <!-- 设置cookie -->
     <div class="cookie" v-if="isCookie">
+
       <div class="ask">
         The site users cookies to remember whether you agreed on this visit to see any cookies on any future visit. Eh？
       </div>
+
       <div class="option">
         <div @click="changeCookie">NO</div>
         <div  @click="changeCookie" class="yes">YES</div>
       </div>
-    </div>
 
+    </div>
+    <!-- 头部部分 -->
     <header class="header">
+
       <div class="top">
+
         <div class="icon" @click="showMenu">
           <Icon type="md-menu"/>
         </div>
+
         <span>YellGame</span>
+
         <div class="icon share-icon" :data-clipboard-text="address" @click="share">
           <Icon type="md-share" />
         </div>
+
       </div>
+
       <ul class="bottom">
         <nuxt-link :to="{name:'index'}"><li>Recommendation</li></nuxt-link>
         <nuxt-link :to="{name:'ranking'}"><li>Ranking</li></nuxt-link>
       </ul>
-    </header>
 
+    </header>
+    <!-- 轮播图部分 -->
     <Carousel
       v-model="carvalue"
       :autoplay="setting.autoplay"
@@ -46,14 +54,21 @@
       :radius-dot="setting.radiusDot"
       :trigger="setting.trigger"
       :arrow="setting.arrow">
+
       <CarouselItem>
-        <a href="./detail/Bubble%20Shooter%20Candy"><div class="banner"><img src="../static/bubble.jpg" width="100%" alt=""></div></a>
+        <a href="./detail/Bubble Shooter Pro"><div class="banner"><img src="../static/bubble-shooter-pro.jpg" width="100%" alt="h5 games,free game"></div></a>
       </CarouselItem>
+
       <CarouselItem>
-        <a href="./detail/Jumpanda"><div class="banner"><img src="../static/pander.jpg" width="100%" alt=""></div></a>
+        <a href="./detail/360 Connect"><div class="banner"><img src="../static/360-connect.jpg" width="100%" alt="h5 games,free game"></div></a>
+      </CarouselItem>
+
+      <CarouselItem>
+        <a href="./detail/Street Race"><div class="banner"><img src="../static/street-race.jpg" width="100%" alt="h5 games,free game"></div></a>
       </CarouselItem>
 
     </Carousel>
+    <!-- google广告 -->
     <adsense
       ad-client="ca-pub-2363017877465244"
       ad-slot="7998248051"
@@ -61,42 +76,68 @@
       ad-format="auto"
       adFullwidth="true">
     </adsense>
+
     <div id="ad-1" style="text-align: center"></div>
+    <!-- 内容部分 -->
     <div class="content">
+      <!-- 游戏分类 -->
       <div class="categorie" v-for="(game,index) in gameList" :key="index">
+        <!-- 两个分类插一个广告 -->
+        <div v-if="index>1 && index%2===0">
+          <adsense
+            ad-client="ca-pub-2363017877465244"
+            ad-slot="7998248051"
+            ad-style="display:block;text-align:center;"
+            ad-format="auto"
+            adFullwidth="true">
+          </adsense>
+        </div>
+
         <div class="title">
           <h2>{{game.name}}</h2>
           <div @click="toList(game.name)">More</div>
         </div>
+
         <div class="card-container">
           <div class="card" v-for="(detail,index) in game.game" :key="index" @click="toDetial(detail.name)">
+
             <div style="overflow:hidden;">
               <img v-lazy="detail.teaserBig" alt="games">
             </div>
+
             <p :title="detail.name">{{detail.name}}</p>
+
             <div class="card-b">
               <div class="cate">{{game.name}}</div>
               <div class="star">10.0<Icon type="md-star" class="stars" /></div>
             </div>
+
           </div>
         </div>
+
         <div class="clearfix"></div>
       </div>
     </div>
 
     <footer>
       <h3>About Us</h3>
+
       <p>Enjoy with your friends.</p>
+
       <span>Copyright © 2018 Yellgame. All rights Reserved.</span>
+
       <ul>
-        <a href="./useragreement.html"><li>Users Agreement</li></a>
+        <a href="http://www.yellgame.com/_nuxt/img/useragreement.html"><li>Users Agreement</li></a>
         <div class="line"></div>
-        <a href="./privacy.html"><li>Privacy Policy</li></a>
+        <nuxt-link to="/privacy"><li>Privacy Policy</li></nuxt-link>
       </ul>
+
       <button @click="clearCookie">clear all cookie</button>
+
       <p class="small">
         Notice:the content is provided by the content developer . If there are any objections, please give us the original proof and we will remove it after verification.
       </p>
+
     </footer>
   </div>
 </template>
@@ -109,23 +150,24 @@
 export default {
   data(){
     return{
-      address:"http://www.yellgame.com",
+      address: 'http://www.yellgame.com',
       isCookie: true,
       isMenu: false,
-      loading: false,
       isPrivacy: false,
       carvalue: 0,
       setting: {
         autoplay: true,
         autoplaySpeed: 3500,
-        dots: 'none',
+        dots: 'inside',
         radiusDot: false,
         trigger: 'click',
         arrow: 'never'
       },
-      gameList:[]
+      gameList:[],
+      list: []
     }
   },
+
   components: {
     "adsense": VueAdsense,
     Icon,
@@ -133,13 +175,15 @@ export default {
     CarouselItem,
     Spin
   },
-  created(){
-    this.loading=true;
-  },
-  asyncData(){
+  //服务端渲染预先获取数据nuxt(asynData)
+  asyncData () {
       return api.getIndexList().then(
         res => {
-          function compare(prop) {
+          return {
+            gameList:JSON.parse(res.data).sort(compare("name")),
+          }
+          //对返回的数据排序
+          function compare (prop) {
             return function (obj1, obj2) {
               let val1 = obj1[prop];
               let val2 = obj2[prop];
@@ -152,38 +196,42 @@ export default {
               }
             }
           }
-          return{gameList:JSON.parse(res.data).sort(compare("name"))}
         },
         err => {
           console.log("Get GameList Error!")
         }
       )
   },
-  mounted(){
-    let clipboard = new Clipboard('.share-icon');
-    this.loading=false;
-    if(this.getCookie("isCookie")){
+
+  mounted () {
+    new Clipboard('.share-icon');
+    if (this.getCookie("isCookie")) {
       this.isCookie = !this.getCookie("isCookie")
     }
+    this.loading = true
   },
-  methods:{
-    share(){
+
+  methods: {
+    share () {
       this.$Message.success({
         content: 'Copied share link',
         duration: 3
       });
     },
-    clearCookie(){
+
+    clearCookie () {
       this.delCookie("isCookie");
       this.$router.go(0);
     },
-    delCookie(key) {
+
+    delCookie (key) {
       let data = this.getCookie(key)
-      if(data !== false){
+      if (data !== false) {
         this.setCookie(key,data,-1);
       }
     },
-    getCookie(key) {
+
+    getCookie (key) {
       let data = document.cookie
       let startIndex = data.indexOf(key + '=')
       if(startIndex > -1) {
@@ -195,32 +243,35 @@ export default {
         return ''
       }
     },
-    toList(cate){
+
+    toList (cate) {
       this.$router.push({
         path:"/list/"+cate
-        // name:"list",
-        // params: { cate }
       })
     },
-    toDetial(name){
+
+    toDetial (name) {
       this.$router.push({
         path:"/detail/" + name
       })
     },
-    setCookie(key,value,time) {
+
+    setCookie (key,value,time) {
       let expire = time
-      if(time == undefined) {
+      if(time === undefined) {
         expire = 2
       }
       let cur = new Date()
       cur.setTime(cur.getTime() + expire*3600*1000)
       document.cookie = key + '=' + encodeURIComponent(value) + ';expires=' + cur.toGMTString() + ";path=/;"
     },
-    changeCookie(){
+
+    changeCookie () {
       this.isCookie = !this.isCookie;
       this.setCookie("isCookie",true,720);
     },
-    showMenu(){
+
+    showMenu () {
       this.isMenu = !this.isMenu
     },
   }
@@ -229,6 +280,12 @@ export default {
 
 <style lang="less" scoped>
   @import "../assets/style/bass";
+  .ivu-spin-fix .ivu-spin-main{
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translate(-50%,0);
+  }
   .loading{
     height: 100%;
     width: 100%;

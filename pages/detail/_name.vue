@@ -1,22 +1,28 @@
-<template slot="title">
+<template>
   <div class="app">
+
     <header class="header">
       <div class="top">
+
         <div class="icon" @click="goback">
           <Icon type="md-arrow-back" />
         </div>
+
         <span>{{activeName}}</span>
+
         <div class="icon share-icon" :data-clipboard-text="address" @click="share">
           <Icon type="md-share" />
         </div>
+
       </div>
     </header>
+
     <div class="content">
       <div class="box main">
-        <img :src="gameDetail.teaserBig" alt="">
-        <br>
+        <img :src="gameDetail.teaserBig" alt=""><br>
         <div class="tag" v-for="(citem,cindex) in gameDetail.categories" :key="citem.id" @click="toList(citem)" v-if="cindex == 1">{{citem}}</div>
         <h3>{{activeName}}</h3>
+
         <div class="starts">
           <Icon type="md-star" />
           <Icon type="md-star" />
@@ -25,6 +31,7 @@
           <Icon type="md-star" />
           <span>10.0</span>
         </div>
+
         <adsense
           ad-client="ca-pub-2363017877465244"
           ad-slot="9792521936"
@@ -32,10 +39,14 @@
           ad-format="fluid"
           adLayout="in-article">
         </adsense>
+
         <div id="ad-2" style="text-align: center"></div>
+
       </div>
+
       <div class="box like">
         <h4>You might like</h4>
+
         <div class="games-con">
           <div class="games" v-for="detail in gameRecommond" :key="detail.name" @click="toDetial(detail.name)">
             <div><img :src="detail.teaserBig" alt="games"></div>
@@ -43,7 +54,9 @@
             <div class="play-btn">PLAY</div>
           </div>
         </div>
+
       </div>
+
       <adsense
         ad-client="ca-pub-2363017877465244"
         ad-slot="8023967086"
@@ -51,42 +64,48 @@
         ad-format="auto"
         adFullwidth="true">
       </adsense>
+
       <div class="box cate">
         <h4>Categories</h4>
         <div v-for="(citem,cindex) in gameDetail.categories" :key="citem.id" @click="toList(citem)" v-if="cindex != 0">{{citem}}</div>
       </div>
+
       <div class="box discription">
         <h4>Introduction</h4>
         <p>{{gameDetail.description}}</p>
       </div>
+
       <div class="box detail">
         <h4>Details</h4>
+
         <div>
           <p>Version:</p>
           <p>1.0.0</p>
         </div>
+
         <div>
           <p>Update time:</p>
           <p>2018-11-23</p>
         </div>
-      </div>
-      <div class="box" style="text-align: center" id="ad-3">
 
       </div>
+
+      <div class="box" style="text-align: center" id="ad-3"></div>
+
       <button @click="goGame(activeName)">PLAY</button>
     </div>
+
   </div>
 </template>
 <script>
   import api from '../../plugins/axios'
   import VueAdsense from '@/components/VueAdsense'
   import Clipboard from 'clipboard';
-  // import postscribe from 'postscribe';
   import { Icon } from 'iview'
   export default {
-    data() {
+    data () {
       return {
-        address:"http://www.yellgame.com",
+        address:'http://www.yellgame.com',
         isMenu: false,
         loading: false,
         isPrivacy: false,
@@ -94,32 +113,35 @@
         gameRecommond: []
       }
     },
-    mounted(){
+    mounted () {
       new Clipboard('.share-icon');
-
     },
+
     methods: {
-      share(){
+      share () {
         this.$Message.success({
           content: 'Copied share link',
           duration: 3
         });
       },
-      goGame(name){
+
+      goGame (name) {
         this.$router.push({
           path:"/game/"+name
         })
       },
-      goback(){
+
+      goback () {
         this.$router.go(-1);
       },
-      toList(cate){
+
+      toList (cate) {
         this.$router.push({
           path:"/list/"+cate
         })
       },
-      getData(name) {
-        this.loading = true
+
+      getData (name) {
         let arr = [
           this.getDetail(name),
           this.getRecommond(name)
@@ -132,12 +154,12 @@
           }
         )
       },
-      getDetail(name) {
+
+      getDetail (name) {
         return new Promise((resolve,reject) => {
           api.getDetail({name: name}).then(
             res => {
               resolve(res.data)
-              // this.detailList = JSON.parse(res.data)
             },
             err => {
               console.log("Get getDetail Error!")
@@ -145,12 +167,12 @@
           )
         })
       },
-      getRecommond(name) {
+
+      getRecommond (name) {
         return new Promise((resolve,reject) => {
           api.getRecommond({name: name}).then(
             res => {
               resolve(res.data)
-              // this.recommondList = JSON.parse(res.data)
             },
             err => {
               console.log("Get getRecommond Error!")
@@ -158,23 +180,27 @@
           )
         })
       },
-      showPrivacy(event){
+
+      showPrivacy (event) {
         event.preventDefault()
         this.isPrivacy=true
       },
-      toDetial(name){
+
+      toDetial (name) {
         this.$router.push({
           path:"/detail/" + name
         })
       }
 
     },
+
     computed: {
       activeName: function() {
         this.getData(this.$route.params.name)
         return this.$route.params.name
       }
     },
+
     directives: {
       focus: {
         inserted: function (el) {
@@ -182,6 +208,7 @@
         }
       }
     },
+
     components: {
       "adsense": VueAdsense,
       Icon

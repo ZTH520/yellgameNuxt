@@ -1,3 +1,6 @@
+/*
+  css初始化
+*/
 html {
   width: 100%;
     max-width: 540px;
@@ -5,15 +8,18 @@ html {
     -webkit-overflow-scrolling: touch;
     overflow-scrolling: touch;
 }
+
 ::-webkit-scrollbar {
     width: 0;
 }
+
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   outline: 0;
 }
+
 *, :after, :before {
     -webkit-box-sizing: border-box;
        -moz-box-sizing: border-box;
@@ -22,9 +28,11 @@ html {
         -ms-text-size-adjust: 100%;
             text-size-adjust: 100%;
 }
+
 *, :after, :before {
     -webkit-tap-highlight-color: transparent;
 }
+
 body{
   font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
   overflow-x:hidden;
@@ -34,16 +42,20 @@ body{
   overflow-scrolling: touch;
   position: relative;
 }
+
 a{
   text-decoration: none;
   color: #EF8521;
 }
+
 a:hover {
   color: #EF8521;
 }
+
 li{
   list-style: none;
 }
+
 input, button {
   border: none;
   outline: none;
@@ -53,12 +65,14 @@ input, button {
   border: 0;
   outline: 0;
 }
+
 .clearfix:before,
 .clearfix:after {
   display: table;
   line-height: 0;
   content: "";
 }
+
 .clearfix:after {
   clear: both;
 }
@@ -66,9 +80,11 @@ input, button {
 input::-webkit-input-placeholder, textarea::-webkit-input-placeholder{
   color: #c2c2c2;
 }
+
 input::-moz-placeholder, textarea::-moz-placeholder {
   color: #c2c2c2;
 }
+
 input::-ms-input-placeholder, textarea::-ms-input-placeholder {
   color: #c2c2c2;
 }
@@ -79,15 +95,19 @@ input::-ms-input-placeholder, textarea::-ms-input-placeholder {
   -ms-user-select: none;
   user-select: none;
 }
+
 .stop-to-scroll {
   overflow-y: hidden;
 }
+
 .slide-enter-active {
   transition: all .3s ease;
 }
+
 .slide-leave-active {
   transition: all .3s ease;
 }
+
 .slide-enter, .slide-leave-to {
   transform: translateX(-100%);
 }
